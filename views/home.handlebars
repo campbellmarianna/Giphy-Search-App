@@ -1,0 +1,14 @@
+<!-- home.handlebars -->
+<h1>Search for GIFS</h1>
+<form action="/">
+    <input type="text" name="term">
+    <button type="submit">Search</button>
+</form>
+
+<!-- Iterate over the arry of gifs that Giphy returned -->
+{{#each gifs}}
+    <!-- We access each gif's images and we use the fixed_height version so all <thead>
+        are the same height.
+    </thead>-->
+    <img src="{{this.images.fixed_height.url}}">
+{{/each}}
