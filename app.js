@@ -40,36 +40,52 @@ app.get('/greetings/:name', function (req, res) {
     res.render('greetings', {name: name});
 })
 
+
+
+// app.get('/', function (req, res) {
+//   console.log(req.query.term)
+//   var queryString = req.query.term;
+//   // ENCODE THE QUERY STRING TO REMOVE WHITE SPACES AND RESTRICTED CHARACTERS
+//   var term = encodeURIComponent(queryString);
+//   // PUT THE SEARCH TERM INTO THE GIPHY API SEARCH URL
+//   var url = 'http://api.giphy.com/v1/gifs/search?q=' + term + '&api_key=dc6zaTOxFJmzC'
+//
+//   http.get(url, function(response) {
+//     // SET ENCODING OF RESPONSE TO UTF8
+//     response.setEncoding('utf8');
+//
+//     var body = '';
+//
+//     response.on('data', function(d) {
+//       // CONTINUOUSLY UPDATE STREAM WITH DATA FROM GIPHY
+//       body += d;
+//     });
+//
+//     response.on('end', function() {
+//       // WHEN DATA IS FULLY RECEIVED PARSE INTO JSON
+//       var parsed = JSON.parse(body);
+//       // RENDER THE HOME TEMPLATE AND PASS THE GIF DATA IN TO THE TEMPLATE
+//       res.render('home', {gifs: parsed.data})
+//     });
+//   });
+// })
+
+app.get('/', function (req, res) {
+    // if you get a search term search for gifs with that term
+    if (req.query.term) {
+        giphy.search(req.query.term, function (err, response) {
+          res.render('home', {gifs: response.data, term: req.query.term})
+        });
+    // if you don't get a search term display trending gifs
+    } else {
+        giphy.trending(function(err, response) {
+            res.render('home', {gifs: response.data})
+        })
+    }
+});
+
 // Web Server Check
 app.listen(3000, function() {
     console.log('Example app listening on port 3000!');
     //console.log('{term}');
 });
-
-app.get('/', function (req, res) {
-  console.log(req.query.term)
-  var queryString = req.query.term;
-  // ENCODE THE QUERY STRING TO REMOVE WHITE SPACES AND RESTRICTED CHARACTERS
-  var term = encodeURIComponent(queryString);
-  // PUT THE SEARCH TERM INTO THE GIPHY API SEARCH URL
-  var url = 'http://api.giphy.com/v1/gifs/search?q=' + term + '&api_key=dc6zaTOxFJmzC'
-
-  http.get(url, function(response) {
-    // SET ENCODING OF RESPONSE TO UTF8
-    response.setEncoding('utf8');
-
-    var body = '';
-
-    response.on('data', function(d) {
-      // CONTINUOUSLY UPDATE STREAM WITH DATA FROM GIPHY
-      body += d;
-    });
-
-    response.on('end', function() {
-      // WHEN DATA IS FULLY RECEIVED PARSE INTO JSON
-      var parsed = JSON.parse(body);
-      // RENDER THE HOME TEMPLATE AND PASS THE GIF DATA IN TO THE TEMPLATE
-      res.render('home', {gifs: parsed.data})
-    });
-  });
-})
