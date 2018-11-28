@@ -17,9 +17,9 @@ var express = require('express');
 //MIDDLEWARE - plugins or libraries we use to extend a web framework
 var exphbs = require('express-handlebars');
 // REQUIRE HTTP MODULE
-var http = require('http');
+// var http = require('http');
 // INITIALIZE THE GIPHY-API LIBRARY
-var giphy = require('giphy-api')();
+// var giphy = require('giphy-api')();
 
 var app = express();
 
@@ -28,17 +28,6 @@ app.set('view engine', 'handlebars');
 
 // Tell your Express app that your static files will live in the public folder
 app.use(express.static('public'));
-
-app.get('/hello-gif', function (req, res) {
-    var gifUrl = 'http://media2.giphy.com/media/gYBVM1igrlzH2/giphy.gif'
-    res.render('hello-gif', {gifUrl: gifUrl});
-});
-
-// add GET route
-app.get('/greetings/:name', function (req, res) {
-    var name = req.params.name;
-    res.render('greetings', {name: name});
-})
 
 
 
@@ -70,22 +59,37 @@ app.get('/greetings/:name', function (req, res) {
 //   });
 // })
 
-app.get('/', function (req, res) {
-    // if you get a search term search for gifs with that term
-    if (req.query.term) {
-        giphy.search(req.query.term, function (err, response) {
-          res.render('home', {gifs: response.data, term: req.query.term})
-        });
-    // if you don't get a search term display trending gifs
-    } else {
-        giphy.trending(function(err, response) {
-            res.render('home', {gifs: response.data})
-        })
-    }
+// app.get('/', function (req, res) {
+//     // if you get a search term search for gifs with that term
+//     if (req.query.term) {
+//         giphy.search(req.query.term, function (err, response) {
+//           res.render('home', {gifs: response.data, term: req.query.term})
+//         });
+//     // if you don't get a search term display trending gifs
+//     } else {
+//         giphy.trending(function(err, response) {
+//             res.render('home', {gifs: response.data})
+//         })
+//     }
+// });
+
+app.get('/hello-gif', function (req, res) {
+    var gifUrl = 'http://media2.giphy.com/media/gYBVM1igrlzH2/giphy.gif'
+    res.render('hello-gif', {gifUrl: gifUrl})
 });
+
+app.get('/greetings/:name', function (req, res) {
+    var name = req.params.name;
+    res.render('greetings', {name: name});
+})
+
+// Question: Why is that what I submit in a input text field appears in the url path 
+app.get('/', function (req, res) {
+    res.render('home')
+})
 
 // Web Server Check
 app.listen(3000, function() {
-    console.log('Example app listening on port 3000!');
+    console.log('Gif Search listening on port 3000!');
     //console.log('{term}');
 });

@@ -1,0 +1,5 @@
+Good Resource for understanding why for a GET request why the form address
+appears in the address bar: https://developers.google.com/web/tools/chrome-devtools/?utm_source=dcc&utm_medium=redirect&utm_campaign=2018Q2
+
+Good Resource for understanding Developer Tools (a must have understanding when
+building with Client-side Javascript): https://developers.google.com/web/tools/chrome-devtools/javascript/
