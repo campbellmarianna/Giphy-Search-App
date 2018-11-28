@@ -17,9 +17,9 @@ var express = require('express');
 //MIDDLEWARE - plugins or libraries we use to extend a web framework
 var exphbs = require('express-handlebars');
 // REQUIRE HTTP MODULE
-// var http = require('http');
+var http = require('http');
 // INITIALIZE THE GIPHY-API LIBRARY
-// var giphy = require('giphy-api')();
+var giphy = require('giphy-api')();
 
 var app = express();
 
@@ -29,50 +29,6 @@ app.set('view engine', 'handlebars');
 // Tell your Express app that your static files will live in the public folder
 app.use(express.static('public'));
 
-
-
-// app.get('/', function (req, res) {
-//   console.log(req.query.term)
-//   var queryString = req.query.term;
-//   // ENCODE THE QUERY STRING TO REMOVE WHITE SPACES AND RESTRICTED CHARACTERS
-//   var term = encodeURIComponent(queryString);
-//   // PUT THE SEARCH TERM INTO THE GIPHY API SEARCH URL
-//   var url = 'http://api.giphy.com/v1/gifs/search?q=' + term + '&api_key=dc6zaTOxFJmzC'
-//
-//   http.get(url, function(response) {
-//     // SET ENCODING OF RESPONSE TO UTF8
-//     response.setEncoding('utf8');
-//
-//     var body = '';
-//
-//     response.on('data', function(d) {
-//       // CONTINUOUSLY UPDATE STREAM WITH DATA FROM GIPHY
-//       body += d;
-//     });
-//
-//     response.on('end', function() {
-//       // WHEN DATA IS FULLY RECEIVED PARSE INTO JSON
-//       var parsed = JSON.parse(body);
-//       // RENDER THE HOME TEMPLATE AND PASS THE GIF DATA IN TO THE TEMPLATE
-//       res.render('home', {gifs: parsed.data})
-//     });
-//   });
-// })
-
-// app.get('/', function (req, res) {
-//     // if you get a search term search for gifs with that term
-//     if (req.query.term) {
-//         giphy.search(req.query.term, function (err, response) {
-//           res.render('home', {gifs: response.data, term: req.query.term})
-//         });
-//     // if you don't get a search term display trending gifs
-//     } else {
-//         giphy.trending(function(err, response) {
-//             res.render('home', {gifs: response.data})
-//         })
-//     }
-// });
-
 app.get('/hello-gif', function (req, res) {
     var gifUrl = 'http://media2.giphy.com/media/gYBVM1igrlzH2/giphy.gif'
     res.render('hello-gif', {gifUrl: gifUrl})
@@ -81,12 +37,53 @@ app.get('/hello-gif', function (req, res) {
 app.get('/greetings/:name', function (req, res) {
     var name = req.params.name;
     res.render('greetings', {name: name});
-})
+});
+// THIS
+// Question: Why is that what I submit in a input text field appears in the url path
+// app.get('/', function (req, res) {
+//     var queryString = req.query.term;
+//     // Encode the query string to remove white spaces and restricted characters
+//     var term = encodeURIComponent(queryString);
+//     // Put the search term into the giphy API search URL
+//     var url = 'http://api.giphy.com/v1/gifs/search?q=' + term + '&api_key=dc6zaTOxFJmzC'
+//
+//     http.get(url, function(response) {
+//         // Set encoding of response to utf8
+//         // READ ARTICLE ABOUT THIS TONIGHT
+//         response.setEncoding('utf8');
+//
+//         var body = '';
+//
+//         response.on('data', function(d) {
+//             // Continuously update stream with data from giphy
+//             body += d;
+//         });
+//
+//         response.on('end', function() {
+//             // when data is fully received parse into JSON
+//             var parsed = JSON.parse(body);
+//             // Render the home template and pass the gif data into the template
+//             res.render('home', {gifs: parsed.data})
+//         });
+//     });
+// })
 
-// Question: Why is that what I submit in a input text field appears in the url path 
-app.get('/', function (req, res) {
-    res.render('home')
-})
+// OR THAT
+app.get('/', function (req, response) {
+    // if you get a search term for gifs with that term
+    if (req.query.term) {
+        giphy.search(req.query.term, function (err, response) {
+            console.log(err);
+            response.render('home', {gifs: res.data});
+        });
+    // if you don't get a search term display trending gifs
+    } else {
+        giphy.trending(function (err, res) {
+            response.render('home', {gifs: res.data});
+        });
+    }
+});
+
 
 // Web Server Check
 app.listen(3000, function() {
