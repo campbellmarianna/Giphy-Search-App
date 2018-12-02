@@ -1,5 +1,7 @@
-Good Resource for understanding why for a GET request why the form address
-appears in the address bar: https://developers.google.com/web/tools/chrome-devtools/?utm_source=dcc&utm_medium=redirect&utm_campaign=2018Q2
+// Question: Why is that what I submit in a form appears in the url path once I press submit?
+// The method for the form is get, if a form is sent using this method the data sent to the server is appended to the url.
+
+Information Source: https://developers.google.com/web/tools/chrome-devtools/?utm_source=dcc&utm_medium=redirect&utm_campaign=2018Q2
 
 Good Resource for understanding Developer Tools (a must have understanding when
 building with Client-side Javascript): https://developers.google.com/web/tools/chrome-devtools/javascript/
